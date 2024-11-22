@@ -1,0 +1,22 @@
+name: Upload Notebooks to GCS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCS_KEY }}
+
+      - name: Upload notebooks to GCS
+        run: |
+          gsutil cp *.ipynb gs://dataproc-staging-asia-south2-89944601945-3aouat7n/notebooks/jupyter/
